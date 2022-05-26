@@ -9,7 +9,6 @@ import seaborn as sns
 
 
 def removing_noise(n_frames, data):  # n_frames - number of frames for mean value
-    print(data.shape)
     session_info = np.load("session_labels.npy")
     mean_list = []
     clean_data = np.copy(data)
@@ -36,7 +35,6 @@ def removing_noise(n_frames, data):  # n_frames - number of frames for mean valu
 
     clean_data[:5] -= first_mean
 
-    print(clean_data.shape)
     return clean_data
 
 
@@ -66,6 +64,8 @@ def preprocessing(data):
     for i in range(1, 3):
         range_dopler_arr += np.abs(processing.processing_rangeDopplerData(data[:, i, :, :]))
         range_dopler_arr = remove_center_line(range_dopler_arr)
+
+    range_dopler_arr = range_dopler_arr[:, :, :32]
 
     return range_dopler_arr
 
@@ -108,12 +108,13 @@ random_state = 420
 X = np.load("train_data.npy")
 Y = np.load("train_labels.npy")
 
-X, X_test, Y, y_test = train_test_split(X, Y, test_size=0.91, random_state=random_state)
+X, X_test, Y, y_test = train_test_split(X, Y, test_size=0.85, random_state=random_state)
 
 X_rdm = preprocessing(X) # getting range doppler maps instead of raw data
 X_rdm = removing_noise(5, X_rdm)
 
 img = X_rdm[1220]
+print(Y[1220])
 plot.imshow(img)
 plot.show()
 
