@@ -7,6 +7,7 @@ import matplotlib.animation as animation
 import pickle
 import pandas as pd
 import seaborn as sns
+from joblib import dump
 
 
 def removing_noise(n_frames, data):  # n_frames - number of frames for mean value
@@ -123,7 +124,7 @@ Y = np.load("train_labels.npy")
 X, Y = shuffle(X, Y, random_state= random_state)
 
 X_rdm = preprocessing(X) # getting range doppler maps instead of raw data
-X_rdm = removing_noise(5, X_rdm)
+# X_rdm = removing_noise(5, X_rdm)
 
 
 # FEATURES
@@ -150,6 +151,8 @@ n_pca = 8
 pca = PCA(n_pca)
 converted_data = X_rdm.reshape(X_rdm.shape[0], -1)
 pca_model = pca.fit_transform(converted_data)
+dump(pca, "pca.joblib")
+
 print(pca_model.shape)
 print(sum(pca.explained_variance_ratio_))
 
