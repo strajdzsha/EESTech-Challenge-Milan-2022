@@ -18,4 +18,4 @@ Modules you can run to train/test the model, or to visualise data in animation:
 - model.py
 - visualising_data.py
 - training_model.py
-- - live_testing.py
+- live_testing.py
